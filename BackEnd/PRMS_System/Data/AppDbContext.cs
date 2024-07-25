@@ -72,11 +72,16 @@ public class AppDbContext : DbContext
             .HasForeignKey(p => p.UserId)
             .OnDelete(DeleteBehavior.ClientSetNull); // Manage nullability in code
 
-        modelBuilder.Entity<Parent>()
-            .HasOne(p => p.Student)
-            .WithMany()
-            .HasForeignKey(p => p.StudentId)
-            .OnDelete(DeleteBehavior.ClientSetNull); // Manage nullability in code
+        modelBuilder.Entity<Student>()
+            .HasOne(s => s.Parent)
+            .WithOne(p => p.Student)
+            .HasForeignKey<Parent>(p => p.StudentId);
+
+        //modelBuilder.Entity<Parent>()
+        //    .HasOne(p => p.Student)
+        //    .WithMany()
+        //    .HasForeignKey(p => p.StudentId)
+        //    .OnDelete(DeleteBehavior.ClientSetNull); // Manage nullability in code
 
             modelBuilder.Entity<Account>()
                      .HasOne(a => a.User)
@@ -99,6 +104,15 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Transaction>()
                 .Property(t => t.Amount)
                 .HasColumnType("decimal(18, 2)"); // Specify precision and scale
+
+        modelBuilder.Entity<Account>(entity =>
+        {
+            entity.Property(e => e.Balance)
+                  .HasColumnType("decimal(18, 2)");
+
+            entity.Property(e => e.DueAmount)
+                  .HasColumnType("decimal(18, 2)");
+        });
 
         modelBuilder.Entity<Attendance>()
                 .HasOne(a => a.Student)

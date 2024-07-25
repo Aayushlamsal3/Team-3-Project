@@ -28,4 +28,17 @@ namespace PRMS_System.DTO
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
     }
+
+    public class StudentWithParentDto
+    {
+        public int StudentId { get; set; }
+        public string FullName { get; set; }
+        public string FacultyName { get; set; }
+        public string ClassName { get; set; }
+        public string BatchName { get; set; }
+        public string GradeLevel { get; set; }
+        public string ParentFullName { get; set; }
+        public string ParentPhoneNumber { get; set; }
+        public string ParentEmail { get; set; }
+    }
 }

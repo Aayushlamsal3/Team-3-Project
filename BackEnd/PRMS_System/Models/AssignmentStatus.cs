@@ -21,7 +21,7 @@ namespace PRMS_System.Models
 
         [ForeignKey("AssignmentId")]
         public Assignment Assignment { get; set; }
-
+         
         [ForeignKey("StudentId")]
         public Student Student { get; set; }
     }

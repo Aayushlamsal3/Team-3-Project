@@ -1,4 +1,5 @@
-﻿using PRMS_System.DTO;
+﻿using Microsoft.EntityFrameworkCore;
+using PRMS_System.DTO;
 using PRMS_System.Models;
 
 namespace PRMS_System.Services
@@ -26,7 +27,7 @@ namespace PRMS_System.Services
                 {
                     Username = username,
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword(password),
-                    Email = $"{studentDto.FirstName}.{studentDto.LastName}@ismt.com",
+                    Email = $"{username}.@ismt.com",
                     RoleId = 2,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
@@ -79,9 +80,35 @@ namespace PRMS_System.Services
             }
         }
 
+
+        public async Task<List<StudentWithParentDto>> GetAllStudentsAsync()
+        {
+            return await _context.Students
+                .Include(s => s.Parent)
+                 .Include(s => s.Faculty)
+                .Include(s => s.Class)
+                .Include(s => s.Batch)
+                .Select(s => new StudentWithParentDto
+                {
+                    StudentId = s.StudentId,
+                    FullName = $"{s.FirstName} {s.LastName}",
+                    FacultyName = s.Faculty.Name, // Assuming you have a FacultyName property in Faculty entity
+                    ClassName = s.Class.Name, // Assuming you have a ClassName property in Class entity
+                    BatchName = s.Batch.Name, // Assuming you have a BatchName property in Batch entity
+                    GradeLevel = s.GradeLevel,
+                    ParentFullName = $"{s.Parent.FirstName} {s.Parent.LastName}",
+                    ParentPhoneNumber = s.Parent.PhoneNumber,
+                    ParentEmail = s.Parent.Email
+                })
+                .ToListAsync();
+        }
+       
+
+
+
         private string GenerateUniqueUsername(string firstName, string lastName)
         {
-            string baseUsername = $"{firstName}.{lastName}".ToLower();
+            string baseUsername = $"{firstName}_{lastName}".ToLower();
             string username = baseUsername;
             int counter = 1;
 

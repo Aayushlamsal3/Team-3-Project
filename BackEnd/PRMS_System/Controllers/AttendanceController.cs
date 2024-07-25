@@ -30,12 +30,31 @@ namespace PRMS_System.Controllers
             return Ok(new { status = "Class Attedance saved." });
         }
 
+        //[HttpGet("list")]
+        //public async Task<IActionResult> GetAttendances([FromQuery] int classId, [FromQuery] int batchId, [FromQuery] DateTime date)
+        //{
+        //    var attendances = await _attendanceService.GetAttendancesByClassAsync(classId, batchId, date);
+
+        //    var attendanceList = await attendances
+        //        .Select(a => new
+        //        {
+        //            a.StudentId,
+        //            StudentName = $"{a.Student.FirstName} {a.Student.LastName}",
+        //            a.Date,
+        //            a.Status
+        //        })
+        //        .ToListAsync();
+
+        //    return Ok(attendanceList);
+          
+        //}
+
         [HttpGet("list")]
         public async Task<IActionResult> GetAttendances([FromQuery] int classId, [FromQuery] int batchId, [FromQuery] DateTime date)
         {
             var attendances = await _attendanceService.GetAttendancesByClassAsync(classId, batchId, date);
 
-            var attendanceList = await attendances
+            var attendanceList = attendances
                 .Select(a => new
                 {
                     a.StudentId,
@@ -43,10 +62,23 @@ namespace PRMS_System.Controllers
                     a.Date,
                     a.Status
                 })
-                .ToListAsync();
+                .ToList();
 
             return Ok(attendanceList);
-          
+        }
+
+        [HttpGet("studentSummary/{studentId}")]
+        public async Task<IActionResult> GetStudentAttendanceSummary(int studentId, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+        {
+            var summary = await _attendanceService.GetStudentAttendanceSummaryAsync(studentId, startDate, endDate);
+            return Ok(summary);
+        }
+
+        [HttpGet("classSummary/{classId}/{batchId}")]
+        public async Task<IActionResult> GetClassAttendanceSummary(int classId, int batchId, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+        {
+            var summary = await _attendanceService.GetClassAttendanceSummaryAsync(classId, batchId, startDate, endDate);
+            return Ok(summary);
         }
     }
 }

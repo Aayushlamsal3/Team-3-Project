@@ -16,7 +16,8 @@ namespace PRMS_System.Models
         public DateTime DueDate { get; set; }
 
         [Required]
-        public int ClassId { get; set; }  // Assuming assignments are given to a class
+        public int ClassId { get; set; }    
+        public Class Class { get; set; }
 
         public ICollection<AssignmentStatus> AssignmentStatuses { get; set; }
     }

@@ -15,7 +15,7 @@ namespace PRMS_System.Models
         public DateTime Date { get; set; }
 
         [Required]
-        public string Status { get; set; }  // e.g., "Present", "Absent", "Late"
+        public string? Status { get; set; }  // e.g., "Present", "Absent", "Late"
 
         [ForeignKey("StudentId")]
         public Student Student { get; set; }

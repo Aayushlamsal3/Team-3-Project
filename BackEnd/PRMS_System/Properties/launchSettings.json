@@ -20,6 +20,16 @@
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7040;http://localhost:5026"
     },
+    "prms": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://0.0.0.0:5000;http://0.0.0.0:5001"
+    },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,

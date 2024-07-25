@@ -30,13 +30,13 @@ namespace PRMS_System.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountId"));
 
                     b.Property<decimal>("Balance")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("DueAmount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
@@ -260,7 +260,8 @@ namespace PRMS_System.Migrations
                     b.HasIndex("PhoneNumber")
                         .IsUnique();
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("StudentId")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -453,8 +454,9 @@ namespace PRMS_System.Migrations
             modelBuilder.Entity("PRMS_System.Models.Parent", b =>
                 {
                     b.HasOne("PRMS_System.Models.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId")
+                        .WithOne("Parent")
+                        .HasForeignKey("PRMS_System.Models.Parent", "StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PRMS_System.Models.User", "User")
@@ -549,6 +551,12 @@ namespace PRMS_System.Migrations
             modelBuilder.Entity("PRMS_System.Models.Faculty", b =>
                 {
                     b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("PRMS_System.Models.Student", b =>
+                {
+                    b.Navigation("Parent")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

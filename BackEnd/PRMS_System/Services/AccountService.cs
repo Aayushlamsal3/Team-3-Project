@@ -6,10 +6,12 @@ namespace PRMS_System.Services
     public class AccountService
     {
         private readonly AppDbContext _context;
+        private readonly KhaltiService _khaltiService;
 
-        public AccountService(AppDbContext context)
+        public AccountService(AppDbContext context, KhaltiService khaltiService)
         {
             _context = context;
+            _khaltiService = khaltiService;
         }
 
         public async Task<Account> CreateAccountAsync(int userId, int studentId)
@@ -76,5 +78,24 @@ namespace PRMS_System.Services
                 .FirstOrDefaultAsync(a => a.UserId == userId)
                 ?? throw new InvalidOperationException($"Account not found for user {userId}");
         }
+
+
+        public async Task<Transaction> ProcessPaymentAsync(int accountId, decimal amount, string customerMobile)
+        {
+            var account = await _context.Accounts.FindAsync(accountId);
+            if (account == null)
+            {
+                throw new ArgumentException("Account not found");
+            }
+
+            var orderId = Guid.NewGuid().ToString();
+            var orderName = $"Payment for Account {accountId}";
+
+            // Record the payment as a transaction
+            var transaction = await RecordTransactionAsync(accountId, amount, "Credit", $"Payment via Khalti - Mobile: {customerMobile}");
+
+            return transaction;
+        }
     }
 }
+
