@@ -1,17 +1,17 @@
-// src/components/Layout.js
 import React from "react";
 import { Box, Flex } from "@chakra-ui/react";
+import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
-import Header from "./Navbar";
+import Navbar from "./Navbar";
 
-const Layout = ({ children }) => {
+const Layout = () => {
   return (
     <Flex direction="column" minH="100vh">
-      <Header />
+      <Navbar />
       <Flex flex="1">
         <Sidebar />
         <Box flex="1" p="4">
-          {children}
+          <Outlet />
         </Box>
       </Flex>
     </Flex>
